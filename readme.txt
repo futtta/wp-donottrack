@@ -90,6 +90,10 @@ Just tell me, I like the feedback and in general I'll reply within a couple of h
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-donottrack/).
 
 == Changelog ==
+
+= 0.8.7 =
+* no wp donottrack when in amp (as one should not do JS in amp-pages)
+
 = 0.8.6 =
 * improvement: better support for WP installs that do not have /wp-content/
 * correction in changelog for 0.8.5: JS will also be inlined when in "forced" mode
