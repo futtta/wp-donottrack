@@ -234,18 +234,20 @@ if ( !function_exists("is_amp") ) {
         }
 }
 
-if ($agressive!=="0") {
-	if ( !is_admin() && !is_amp() ) {
-		add_action('wp', 'wp_donottrack_ob_setup', 10, 0);
-	} else {
-	       	add_action('wp_print_scripts', 'wp_donottrack_config');
-        	add_action('init', 'wp_donottrack_init');
-        	add_action('admin_footer', 'wp_donottrack_footer');
-	}
-} else {
-	add_action('wp_print_scripts', 'wp_donottrack_config');
-	add_action('init', 'wp_donottrack_init');
-	add_action('wp_footer', 'wp_donottrack_footer');
+if ( !is_amp() ) {   
+    if ( $agressive!=="0" ) {
+        if ( !is_admin() ) {
+            add_action('wp', 'wp_donottrack_ob_setup', 10, 0);
+        } else {
+            add_action('wp_print_scripts', 'wp_donottrack_config');
+            add_action('init', 'wp_donottrack_init');
+            add_action('admin_footer', 'wp_donottrack_footer');
+        }
+    } else {
+        add_action('wp_print_scripts', 'wp_donottrack_config');
+        add_action('init', 'wp_donottrack_init');
+        add_action('wp_footer', 'wp_donottrack_footer');
+    }
 }
 
 ?>
