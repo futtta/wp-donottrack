@@ -4,7 +4,7 @@ Plugin Name: WP DoNotTrack
 Plugin URI: http://blog.futtta.be/wp-donottrack/
 Description: Stop plugins and themes from inserting 3rd party tracking code and cookies.
 Author: Frank Goossens (futtta)
-Version: 0.8.7
+Version: 0.8.8
 Author URI: http://blog.futtta.be/
 Text Domain: wp-donottrack
 Domain Path: /languages
@@ -13,7 +13,7 @@ Domain Path: /languages
 $debug=false;
 
 if (!$debug) {
-	$dnt_version="0.8.7";
+	$dnt_version="0.8.8";
 	$dnt_file="donottrack-min.js";
 } else {
 	$dnt_version=rand()/1000;

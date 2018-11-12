@@ -3,7 +3,7 @@ Contributors: futtta, optimizingmatters
 Tags: privacy, donottrack, tracking, plugin, theme, security, performance, cookie law, cookies, dnt
 Requires at least: 3.2
 Tested up to: 4.1
-Stable tag: 0.8.6
+Stable tag: 0.8.8
 
 WP DoNotTrack stops plugins/ themes from adding tracking code or cookies, protecting visitor privacy and providing performance and security benefits.
 
@@ -90,6 +90,9 @@ Just tell me, I like the feedback and in general I'll reply within a couple of h
 * [Rate my plugin on wordpress.org](http://wordpress.org/extend/plugins/wp-donottrack/).
 
 == Changelog ==
+
+= 0.8.8 =
+* even better bailing-out if amp (thanks to Patrick Sletvold for [reporting on GitHub](https://github.com/futtta/wp-donottrack/issues/1))
 
 = 0.8.7 =
 * no wp donottrack when in amp (as one should not do JS in amp-pages)
