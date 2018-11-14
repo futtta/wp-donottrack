@@ -93,7 +93,8 @@ function wp_donottrack_config( $noEcho ) {
 			break;
 	}
 
-	$result = "<script type=\"text/javascript\">var wpdnt_config={scope:\"" . $options['scope'] . "\",listmode:\"" . $options['listmode'] . "\",black:" . $blacklist . ",white:" . $whitelist . "};</script>";
+	//todo: add 3rd party options
+	$result = "<script type=\"text/javascript\">var wpdnt_config={scope:\"" . $options['scope'] . "\",listmode:\"" . $options['listmode'] . "\",blacklist:" . $blacklist . ",whitelist:" . $whitelist . "};</script>";
 
 	if( $noEcho ) {
 		return $result;

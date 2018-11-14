@@ -77,6 +77,8 @@ function wp_donottrack_settings_init( ) {
 		'wp_donottrack_whitelist_render',
 		'wp-donottrack',
 		'wp_donottrack_list_section' );
+
+	//todo: add 3rd party section and options
 }
 
 function wp_donottrack_settings_validate( ) {
