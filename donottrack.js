@@ -80,25 +80,25 @@ if( is_filter_active() ) {
 	*/
 
 	// AddToAny: https://wordpress.org/plugins/add-to-any/
-	if( wpdnt_config.thirdParty['add-to-any'] === true ) {
+	if( wpdnt_config.thirdparty['add-to-any'] === true ) {
 		var a2a_config = a2a_config || {};
 		a2a_config.no_3p = 1;
 	}
 
 	// AddThis: https://wordpress.org/plugins/addthis/
-	if( wpdnt_config.thirdParty['addthis'] === true ) {
+	if( wpdnt_config.thirdparty['addthis'] === true ) {
 		var addthis_config = addthis_config || {};
 		addthis_config.data_use_cookies = false;
 	}
 
 	// Google Analytics (ga.js)
-	if( wpdnt_config.thirdParty['ga.js'] === true ) {
+	if( wpdnt_config.thirdparty['ga.js'] === true ) {
 		var _gaq = _gaq || [];
 		_gaq.push( ['_gat._anonymizeIp'] );
 	}
 
 	// Google Analytics (analytics.js)
-	if( wpdnt_config.thirdParty['analytics.js'] && typeof ga === "function" ) {
+	if( wpdnt_config.thirdparty['analytics.js'] && typeof ga === "function" ) {
 		ga( 'set', 'anonymizeIp', true );
 	}
 }
