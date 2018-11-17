@@ -4,14 +4,14 @@ Plugin Name: WP DoNotTrack
 Plugin URI: http://blog.futtta.be/wp-donottrack/
 Description: Stop plugins and themes from inserting 3rd party tracking code and cookies.
 Author: Frank Goossens (futtta)
-Version: 0.9.0
+Version: 0.9.1
 Author URI: http://blog.futtta.be/
 Text Domain: wp-donottrack
 Domain Path: /languages
 */
 
 $debug = false;
-$wpdnt_version = "0.9.0";
+$wpdnt_version = "0.9.1";
 
 $lang_dir = basename( dirname( __FILE__ ) ) . '/languages';
 load_plugin_textdomain( 'wp-donottrack', null, $lang_dir );
@@ -180,7 +180,7 @@ function wp_donottrack_ob_setup(){
 }
 
 function wp_donottrack_get_file_content( $file_name ) {
-	$file_path = WP_PLUGIN_DIR . "/" . basename( dirname( __FILE__ ) ) . "/" . $file_name;
+	$file_path = plugin_dir_path( __FILE__ ) . $file_name;
   return file_get_contents( $file_path );
 }
 
@@ -192,16 +192,16 @@ function wp_donottrack_ob_filter( $html ){
 	$wpdnt_config = wp_donottrack_config( true );
 
 	if( apply_filters( 'wp_donottrack_inline_js', true ) ) {
-		$dnt_setup = "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['aop'] ) . "</script>\n";
-    $dnt_setup .= "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['wpdnt'] ) . "</script>";
+		$wpdnt_setup = "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['aop'] ) . "</script>\n";
+    $wpdnt_setup .= "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['wpdnt'] ) . "</script>";
 	} else {
-		$dnt_setup = "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['aop'] ) . "\"></script>\n";
-		$dnt_setup .= "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['wpdnt'] ) . "\"></script>\n";
+		$wpdnt_setup = "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['aop'] ) . "\"></script>\n";
+		$wpdnt_setup .= "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['wpdnt'] ) . "\"></script>\n";
 	}
-	$dnt_onBody = wp_donottrack_footer( true );
+	$wpdnt_body = wp_donottrack_footer( true );
 
-	$html = str_replace( "</head>", $wpdnt_config . $dnt_setup . "\n</head>", $html );
-	$html = preg_replace( "/(<body\b[^>]*>)/", "$1\n" . $dnt_onBody, $html );
+	$html = str_replace( "</head>", $wpdnt_config . $wpdnt_setup . "\n</head>", $html );
+	$html = preg_replace( "/(<body\b[^>]*>)/", "$1\n" . $wpdnt_body, $html );
 
 	if( $options['level'] === "2" ) {
 		require_once( dirname( __FILE__ ) . $plugin_files['htmldom'] );
@@ -217,31 +217,31 @@ function wp_donottrack_ob_filter( $html ){
 
 				foreach( $dom->find('img[src], script[src], iframe[src]') as $insourced ) {
 					if( strpos( $insourced->src, "//" ) === 0 ) {
-						$inSrc = "http:" . $insourced->src;
+						$in_src = "http:" . $insourced->src;
 					} else {
-						$inSrc = $insourced->src;
+						$in_src = $insourced->src;
 					}
-					$inHost = parse_url( $inSrc, PHP_URL_HOST );
+					$in_host = parse_url( $in_src, PHP_URL_HOST );
 
 					if( $white ) {
 						$intruder_found = true;
 						foreach( $white as $url ) {
-							if( strpos( $inHost, $url ) !== false ) {
+							if( strpos( $in_host, $url ) !== false ) {
 								$intruder_found = false;
 								break;
 							}
 						}
 						if( ( $insourced->src ) && ( $intruder_found ) ) {
 							if( $debug ) {
-								$debugOutput .= "\nNot in whitelist, zapped " . $insourced->outertext;
+								$debug_output .= "\nNot in whitelist, zapped " . $insourced->outertext;
 							}
 							$insourced->outertext = "";
 						}
 					} else {
 						foreach( $black as $url ) {
-							if( strpos( $inHost, $url ) !== false ) {
+							if( strpos( $in_host, $url ) !== false ) {
 								if( $debug ) {
-									$debugOutput .= "\n" . $url . " is blacklisted, zapping " . $insourced->outertext;
+									$debug_output .= "\n" . $url . " is blacklisted, zapping " . $insourced->outertext;
 								}
 								$insourced->outertext = "";
 								break;
@@ -256,8 +256,8 @@ function wp_donottrack_ob_filter( $html ){
 		unset( $dom );
 	}
 
-	if( $debug && $debugOutput ) {
-		$html = $html . "\n\n<!-- WP DoNotTrack SuperClean debug output: " . $debugOutput . "\n -->";
+	if( $debug && $debug_output ) {
+		$html = $html . "\n\n<!-- WP DoNotTrack SuperClean debug output: " . $debug_output . "\n -->";
 	}
 
 	return $html;

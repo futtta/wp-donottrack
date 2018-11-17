@@ -1,9 +1,9 @@
 === WP DoNotTrack ===
-Contributors: futtta, optimizingmatters
+Contributors: futtta, optimizingmatters, dim-0
 Tags: privacy, donottrack, tracking, plugin, theme, security, performance, cookie law, cookies, dnt
 Requires at least: 3.2
-Tested up to: 4.1
-Stable tag: 0.9.0
+Tested up to: 4.9.8
+Stable tag: 0.9.1
 
 WP DoNotTrack stops plugins/ themes from adding tracking code or cookies, protecting visitor privacy and providing performance and security benefits.
 
@@ -18,7 +18,7 @@ This plugin can be useful if you want to:
 * limit the number of external servers that are called from your blog (performance)
 * make your blog more compliant with the EU Cookie Law as implemented in a.o. the UK and Holland (with other EU countries to follow) using conditional privacy
 
-WP DoNotTrack uses (a slightly modified) version of [jQuery AOP](http://code.google.com/p/jquery-aop/) to catch and inspect elements (images, iframes and scripts) that are about to be added to the DOM and renders these harmless if the black- or whitelist say so. You can block 3rd party tracking for all you visitors, or just for those that have navigator.doNotTrack set to "1" or based on a browser cookie.
+WP DoNotTrack uses [jQuery AOP](http://code.google.com/p/jquery-aop/) to catch and inspect elements (images, iframes and scripts) that are about to be added to the DOM and renders these harmless if the black- or whitelist say so. You can block 3rd party tracking for all you visitors, or just for those that have navigator.doNotTrack set to "1" or based on a browser cookie.
 
 The "forced" and "SuperClean" modes use WordPress's output buffering to change the HTML slightly ("forced") or thoroughly ("SuperClean"). SuperClean uses [Simple HTML DOM Parser](http://simplehtmldom.sourceforge.net/) to filter unwanted 3rd party code from the HTML.
 
@@ -65,6 +65,7 @@ Yes, but No. When running in Normal or Forced mode, WP DoNotTrack stops most jav
 
 * some widgets (in the broad sense) only work with tracking enabled (e.g. Facebook Like button or Google Analytics tracking)
 * some trackers use Flash, which is simply out of reach of what WP DoNotTrack currently can do
+* when using [AMP](https://www.ampproject.org/), you're not supposed to have any other javascript code embedded. Therefore, once AMP is enabled, this plugin won't add its own code to the website (which renders it unfunctional). At least, AMP is supposed to anonymize the IPs by default.
 
 = Why would I need "forced" mode? =
 Javascript (and CSS/ HTML) optimizing plugins such as W3 Total Cache and Autoptimize change the way JavaScript is loaded (by combining, minimizing and loading at the end of the page), which can break or limit WP DoNotTrack's functionality.
@@ -77,8 +78,8 @@ Superclean is not yet available if you're only enabling WP DoNotTrack for people
 
 = Any bugs/ issues should I know about? =
 * After installing or when making changes to the WP DoNotTrack configuration, you might have to clear the caches of caching plugins you might be using (e.g. WP Super Cache or W3 Total Cache). Consider it "best practice" to disable caching & javascript-aggregating plugins while testing new black- or whitelists
-* ClourFlare seems to interfere with the way the plugin gets loaded and the way it functions. You can solve the problem by disabling "Rocket Loader" and/or "Auto Minify" alltogether.
-* Not a bug, but still an known issue; as WP DoNotTrack is also active in the wp-admin-pages, it will -when in whitelist mode- impact plugins that (for whatever reason) pull in javascript from elsewhere in their option-pages. This very plugin for instance, depends on googleapis.com to render a rss-widget.
+* CloudFlare seems to interfere with the way the plugin gets loaded and the way it functions. You can solve the problem by disabling "Rocket Loader" and/or "Auto Minify" alltogether.
+* Not a bug, but still an known issue; as WP DoNotTrack is also active in the wp-admin-pages, it will -when in whitelist mode- impact plugins that (for whatever reason) pull in javascript from elsewhere in their option-pages.
 
 = I found a bug/ I would like a feature to be added! =
 Just tell me, I like the feedback and in general I'll reply within a couple of hours. Use the [Contact-page on my blog](http://blog.futtta.be/contact/), [leave a comment in a post about DoNotTrack](http://blog.futtta.be/tag/donottrack/) or [post about it on the wordpress.org plugin forum](http://wordpress.org/tags/wp-donottrack?forum_id=10#postform)
@@ -91,11 +92,17 @@ Just tell me, I like the feedback and in general I'll reply within a couple of h
 
 == Changelog ==
 
+= 0.9.1 =
+* consolidated Google Analytics options
+* added IP address anonymization for Google Global Site Tag
+* added support for being run as mu-plugin
+
 = 0.9.0 =
 * rework of options.php to meet the regular WP settings API
 * explicit checkboxes for (local) thirdparty plugins/libraries are included (analytics.js added)
 * split the plugin's JavaScript code from the jQuery AOP source code, so that they can be maintained separately
 * rework of wp-donottrack.php (spelling, structure, avoiding global variables, etc.)
+* added IP address anonymization for Google Universal Analytics
 * updated external sources ([jQuery AOP](https://github.com/gonzalocasas/jquery-aop) and [PHP Simple HTML DOM Parser](https://github.com/yardenac/simplehtmldom))
 
 = 0.8.8 =

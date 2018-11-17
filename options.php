@@ -102,26 +102,10 @@ function wp_donottrack_settings_init() {
 			'wp_donottrack_thirdparty_section' );
 	}
 
-	/* To be added, as soon as we know, how to read the tracking ID from gtag.js in donottrack.js
 	add_settings_field(
-		'wp_donottrack_thirdparty_gtagjs',
-		__( 'Google Analytics (gtag.js)', 'wp-donottrack' ),
-		'wp_donottrack_thirdparty_gtagjs_render',
-		'wp-donottrack',
-		'wp_donottrack_thirdparty_section' );
-	*/
-
-	add_settings_field(
-		'wp_donottrack_thirdparty_analyticsjs',
-		__( 'Google Analytics (analytics.js)', 'wp-donottrack' ),
-		'wp_donottrack_thirdparty_analyticsjs_render',
-		'wp-donottrack',
-		'wp_donottrack_thirdparty_section' );
-
-	add_settings_field(
-		'wp_donottrack_thirdparty_gajs',
-		__( 'Google Analytics (ga.js)', 'wp-donottrack' ),
-		'wp_donottrack_thirdparty_gajs_render',
+		'wp_donottrack_thirdparty_googleanalytics',
+		__( 'Google Analytics', 'wp-donottrack' ),
+		'wp_donottrack_thirdparty_googleanalytics_render',
 		'wp-donottrack',
 		'wp_donottrack_thirdparty_section' );
 }
@@ -210,24 +194,10 @@ function wp_donottrack_thirdparty_addtoany_render() {
 	<?php
 }
 
-function wp_donottrack_thirdparty_gtagjs_render() {
+function wp_donottrack_thirdparty_googleanalytics_render() {
 	$options = wp_donottrack_get_option();
 	?>
-	<label title="<?php __( 'IP address anonymization for Google Analytics (gtag.js)', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][gtag.js]' <?php checked( $options['thirdparty']['gtag.js'], 1 ); ?> value='1'><?php __( "Instruct <a href=\"https://developers.google.com/analytics/devguides/collection/gtagjs/\" target=\"_blank\">Google Analytics (gtag.js)</a> to anonymize IP addresses.", "wp-donottrack" ) ?></label>
-	<?php
-}
-
-function wp_donottrack_thirdparty_analyticsjs_render() {
-	$options = wp_donottrack_get_option();
-	?>
-	<label title="<?php __( 'IP address anonymization for Google Analytics (analytics.js)', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][analytics.js]' <?php checked( $options['thirdparty']['analytics.js'], 1 ); ?> value='1'><?php __( "Instruct <a href=\"https://developers.google.com/analytics/devguides/collection/analyticsjs/\" target=\"_blank\">Google Analytics (analytics.js)</a> to anonymize IP addresses.", "wp-donottrack" ) ?></label>
-	<?php
-}
-
-function wp_donottrack_thirdparty_gajs_render() {
-	$options = wp_donottrack_get_option();
-	?>
-	<label title="<?php __( 'IP address anonymization for Google Analytics (ga.js)', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][ga.js]' <?php checked( $options['thirdparty']['ga.js'], 1 ); ?> value='1'><?php __( "Instruct <a href=\"https://developers.google.com/analytics/devguides/collection/gajs/\" target=\"_blank\">Google Analytics (ga.js)</a> to anonymize IP addresses.", "wp-donottrack" ) ?></label>
+	<label title="<?php __( 'IP address anonymization for Google Analytics', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][googleanalytics]' <?php checked( $options['thirdparty']['googleanalytics'], 1 ); ?> value='1'><?php __( "Instruct Google Analytics (<a href=\"https://developers.google.com/analytics/devguides/collection/gtagjs/\" target=\"_blank">Global Site Tag/gtag.js</a>, <a href=\"https://developers.google.com/analytics/devguides/collection/analyticsjs/\" target=\"_blank\">Universal Analytics/analytics.js</a> and <a href=\"https://developers.google.com/analytics/devguides/collection/gajs/\" target=\"_blank\">Classical Google Analytics/ga.js</a>) to anonymize IP addresses.", "wp-donottrack" ) ?></label>
 	<?php
 }
 
@@ -239,11 +209,9 @@ function wp_donottrack_get_option() {
 		'blacklist'	 => "media6degrees.com, quantserve.com, lockerz.com",
 		'whitelist'	 => "ajax.googleapis.com",
 		'thirdparty' => array(
-			'addthis'			 => 0,
-			'add-to-any'	 => 0,
-			'gtag.js'			 => 0,
-			'analytics.js' => 0,
-			'ga.js'				 => 0 ) );
+			'addthis'			    => 0,
+			'add-to-any'      => 0,
+			'googleanalytics' => 0 ) );
 
 	$options = get_option( 'wp_donottrack_settings', $default );
 }
