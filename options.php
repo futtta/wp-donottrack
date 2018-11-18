@@ -197,7 +197,7 @@ function wp_donottrack_thirdparty_addtoany_render() {
 function wp_donottrack_thirdparty_googleanalytics_render() {
 	$options = wp_donottrack_get_option();
 	?>
-	<label title="<?php __( 'IP address anonymization for Google Analytics', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][googleanalytics]' <?php checked( $options['thirdparty']['googleanalytics'], 1 ); ?> value='1'><?php __( "Instruct Google Analytics (<a href=\"https://developers.google.com/analytics/devguides/collection/gtagjs/\" target=\"_blank">Global Site Tag/gtag.js</a>, <a href=\"https://developers.google.com/analytics/devguides/collection/analyticsjs/\" target=\"_blank\">Universal Analytics/analytics.js</a> and <a href=\"https://developers.google.com/analytics/devguides/collection/gajs/\" target=\"_blank\">Classical Google Analytics/ga.js</a>) to anonymize IP addresses.", "wp-donottrack" ) ?></label>
+	<label title="<?php __( 'IP address anonymization for Google Analytics', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][googleanalytics]' <?php checked( $options['thirdparty']['googleanalytics'], 1 ); ?> value='1'><?php __( "Instruct Google Analytics (<a href=\"https://developers.google.com/analytics/devguides/collection/gtagjs/\" target=\"_blank\">Global Site Tag/gtag.js</a>, <a href=\"https://developers.google.com/analytics/devguides/collection/analyticsjs/\" target=\"_blank\">Universal Analytics/analytics.js</a> and <a href=\"https://developers.google.com/analytics/devguides/collection/gajs/\" target=\"_blank\">Classical Google Analytics/ga.js</a>) to anonymize IP addresses.", "wp-donottrack" ) ?></label>
 	<?php
 }
 
