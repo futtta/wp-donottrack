@@ -1,181 +1,206 @@
 <?php
-	$plugin_dir = basename(dirname(__FILE__)).'/languages';
-	load_plugin_textdomain( 'wp-donottrack', false, $plugin_dir );
 
-        $dnt_plugin_url = defined('WP_PLUGIN_URL') ? trailingslashit(WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__))) : trailingslashit(get_bloginfo('wpurl')) . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__));
+add_action( 'admin_menu', 'wp_donottrack_add_admin_menu' );
+add_action( 'admin_init', 'wp_donottrack_settings_init' );
 
-add_action('admin_menu', 'dnt_create_menu');
-
-// todo: get all options (in array) to replace all seperate get_option-calls
-
-function dnt_create_menu() {
-        $hook=add_options_page( 'WP DoNotTrack settings', 'WP DoNotTrack', 'manage_options', 'dnt_settings_page', 'dnt_settings_page');
-        add_action( 'admin_init', 'register_dnt_settings' );
-        add_action( 'admin_print_scripts-'.$hook, 'dnt_admin_scripts' );
-        add_action( 'admin_print_styles-'.$hook, 'dnt_admin_styles' );
+function wp_donottrack_add_admin_menu() {
+	add_options_page( 'Options for WP DoNotTrack', 'WP DoNotTrack', 'manage_options', 'wp-donottrack', 'wp_donottrack_options_page_render' );
 }
 
-function register_dnt_settings() {
-	register_setting( 'dnt-settings-group', 'listmode' );
-	register_setting( 'dnt-settings-group', 'whitelist' );
-	register_setting( 'dnt-settings-group', 'blacklist' );
-	register_setting( 'dnt-settings-group', 'ifdnt' );
-	register_setting( 'dnt-settings-group', 'agressive' );
-}
+function wp_donottrack_options_page_render() {
+	?>
+	<form action='options.php' method='post'>
+		<h2><?php echo __( "Options for WP DoNotTrack", "wp-donottrack" ) ?></h2>
 
-function dnt_admin_scripts() {
-	global $dnt_plugin_url;
-	wp_enqueue_script('jqzrssfeed',$dnt_plugin_url.'external/js/jquery.zrssfeed.min.js',array('jquery'),null,true);
-	wp_enqueue_script('jqcookie',$dnt_plugin_url.'external/js/jquery.cookie.min.js',array('jquery'),null,true);
-}
-
-function dnt_admin_styles() {
-        global $dnt_plugin_url;
-        wp_enqueue_style('zrssfeed',$dnt_plugin_url.'external/js/jquery.zrssfeed.css');
-}
-
-function dnt_settings_page() {
-global $defBlack, $defWhite, $wpHost, $ssl;
-?>
-<div class="wrap">
-<h2><?php _e("WP DoNotTrack Settings","wp-donottrack") ?></h2>
-<div style="float:left;width:75%;">
-<p><?php _e("<a href=\"http://blog.futtta.be/tag/donottrack/\" target=\"_blank\">WP DoNotTrack</a> stops plugins and themes from adding javascript-initiated 3rd party tracking code to your site. It helps to improve the overall quality of WordPress, enhancing <a href=\"http://blog.futtta.be/2011/02/17/why-your-wordpress-blog-needs-donottrack/\" target=\"_blank\">not only its privacy, but also performance and security</a>! You can find more information <a href=\"http://wordpress.org/extend/plugins/wp-donottrack/faq/\" target=\"_blank\">in the FAQ on wordpress.org</a>.","wp-donottrack") ?></p>
-<p><?php _e("You can modify WP DoNotTrack's behaviour by changing the following settings:","wp-donottrack") ?></p>
-<form method="post" action="options.php" id="wp-donottrack-form">
-    <?php settings_fields( 'dnt-settings-group' ); ?>
-    <table class="form-table">
-         <tr valign="top">
-                <th scope="row"><?php _e("Stop 3rd party tracking for all visitors?","wp-donottrack") ?></th>
-                <td>
-                        <fieldset>
-                                <legend class="screen-reader-text"><span>Who do you want to stop tracking for?</span></legend>
-                                <label title="Only stop tracking for people with the DoNotTrack browser setting (does not work in Chrome) or based on the presence of a cookie."><input type="radio" name="ifdnt" value="1" <?php if (get_option('ifdnt','1')==="1") echo "checked" ?> /><?php _e("Stop tracking for people who have their <a href=\"http://wordpress.org/extend/plugins/wp-donottrack/faq/\">browser configured to do so or based on the presence of a cookie</a>.","wp-donottrack") ?></label><br />
-				<label title="Privacy for all!"><input type="radio" name="ifdnt" value="0" <?php if (get_option('ifdnt','0')!=="1") echo "checked" ?> /><?php _e("Disable tracking for all my visitors!","wp-donottrack") ?></label><br />
-                        </fieldset>
-                        <span class="description"><?php _e( "Recent versions of all major browsers (<a href=\"http://www.wired.com/epicenter/2011/04/chrome-do-not-track/all/1\" target=\"_blank\">except Chrome</a>) allow users to opt out of tracking, in which case WP DoNotTrack can test for navigator.doNotTrack to conditionally stop 3rd party tracking. Alternatively WP DoNotTrack can act on the presence of a dont_track_me=1 cookie.", "wp-donottrack" )  ?></span>
-                </td>
-         </tr>
-         <tr valign="top">
-                <th scope="row"><?php _e("Do you want to run in normal, forced or SuperClean mode?","wp-donottrack") ?></th>
-                <td>
-                        <fieldset>
-                                <legend class="screen-reader-text"><span>Normal, forced or Superclean mode?</span></legend>
-                                <label title="Normal"><input type="radio" name="agressive" value="0" <?php if (get_option('agressive','1')==="0") echo "checked" ?> /><?php _e("Normal (least invasive)","wp-donottrack") ?></label><br />
-                                <label title="Forced"><input type="radio" name="agressive" value="1" <?php if (get_option('agressive','1')==="1") echo "checked" ?> /><?php _e("Forced (default)","wp-donottrack") ?></label><br />
-                                <label class="notdntcompatible" title="SuperClean"<?php if (get_option('ifdnt','0')==="1") echo "style=\"display:none\"" ?>><input type="radio" name="agressive" value="2" <?php if (get_option('agressive','1')==="2") echo "checked" ?> /><?php _e("SuperClean (most invasive)","wp-donottrack") ?></label><br />
-                        </fieldset>
-                        <span class="description"><?php _e( "\"Normal\" gently asks WordPress to add the WP DoNotTrack javascript to the HTML to check elements being added to your page. \"Forced\" adds the JavaScript with output buffering instead, to stop optimizing plugins (e.g. Autoptimize and W3 Total Cache) from loading WP DoNotTrack javascript too late. \"SuperClean\" uses the output buffering to also filter image, iframe and script tags in your HTML.", "wp-donottrack" )  ?></span>
-                </td>
-         </tr>
-	 <tr valign="top">
-	 	<th scope="row"><?php _e("Do you want to run WP DoNotTrack in black- or whitelist mode?","wp-donottrack") ?></th>
-		<td>
-			<fieldset>
-				<legend class="screen-reader-text"><span>Activate DoNotTrack</span></legend>
-				<label title="whitelist"><input type="radio" name="listmode" value="1" <?php if (get_option('listmode','0')==="1") echo "checked" ?> /><?php _e("Whitelist","wp-donottrack") ?></label><br />
-				<label title="blacklist (default)"><input type="radio" name="listmode" value="0" <?php if (get_option('listmode','0')!=="1") echo "checked" ?> /><?php _e("Blacklist","wp-donottrack") ?></label>
-			</fieldset>
-			<span class="description"><?php _e( "Blacklist-mode is easier to set up, but less secure as it won't stop code from being added later. Whitelist-mode is more future-proof, but you'll have to explicitely identify the 3rd parties that are allowed to add elements to the DOM.", "wp-donottrack" )  ?></span>
-		</td>
-         </tr>
-         <tr valign="top" id="whitelistdiv" <?php if (get_option('listmode','0')!=="1") echo "style=\"display:none\"" ?>>
-                <th scope="row"><?php _e( "Whitelist:", "wp-donottrack" ); ?></label></th>
-                <td>
 		<?php
-			$whitelist=get_option('whitelist',$defWhite);
-                	if(strripos($whitelist,$wpHost)===false) {
-                        	if ($whitelist!="") {
-					$whitelist=$whitelist.",".$wpHost;
-				} else {
-					$whitelist=$wpHost;
-				}
-                        }
+		settings_fields( 'wp_donottrack_settings' );
+		do_settings_sections( 'wp-donottrack' );
+		submit_button();
 		?>
-                        <input type="text" name="whitelist" value="<?php echo(trim($whitelist,',')); ?>" size="80" class="regular-text code" /><br />
-                        <span class="description"><?php _e( "Comma-seperated list of the domains you want to allow to be added to your blog (your blog will be auto-whitelisted).", "wp-donottrack" )  ?></span>
-                </td>
-        </tr>
-         <tr valign="top" id="blacklistdiv" <?php if (get_option('listmode','0')==="1") echo "style=\"display:none\"" ?>>
-                <th scope="row"><?php _e( "Blacklist:", "wp-donottrack" ); ?></label></th>
-                <td>
-                        <input type="text" name="blacklist" value="<?php echo trim(get_option('blacklist',$defBlack),','); ?>" size="80" class="regular-text code" /><br />
-                        <span class="description"><?php _e( "Comma-seperated list of the domains you want to exclude from being added to your blog", "wp-donottrack" )  ?></span>
-                </td>
-        </tr>
-    </table>
-    
-    <p class="submit">
-    <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-    </p>
+	</form>
+	<?php
+	wp_donottrack_settings_jquery();
+}
 
-</form>
-<script type="text/javascript">
-jQuery(document).ready(function() {
-	jQuery('input:radio[name=listmode]').change(function() {
-	  if (jQuery('input:radio[name=listmode]:checked').val()==="1") {
-		jQuery("#blacklistdiv").hide();
-		jQuery("#whitelistdiv").show(800);
-	  } else {
-		jQuery("#whitelistdiv").hide();
-		jQuery("#blacklistdiv").show(800);
-	  }
-	})
+function wp_donottrack_settings_init() {
+	register_setting( 'wp_donottrack_settings', 'wp_donottrack_settings', 'wp_donottrack_settings_validate' );
 
-	jQuery('input:radio[name=ifdnt]').change(function() {
-	  if (jQuery('input:radio[name=ifdnt]:checked').val()==="1") {
-	  	if (jQuery('input:radio[name=agressive]:checked').val()==="2") {
-			jQuery("input:radio[name=agressive]")[1].checked=true;
-		}
-		jQuery(".notdntcompatible").hide(800);
-	  } else {
-		jQuery(".notdntcompatible").show(800);
-	  }
-	});
-})
-</script>
-</div>
-<div style="float:right;width:25%" id="dnt_admin_feed">
-        <div style="margin-left:10px;margin-top:-5px;">
-                <h3>
-                        <?php _e("futtta about","wp-donottrack") ?>
-                        <select id="feed_dropdown" >
-                                <option value="1"><?php _e("WP DoNotTrack","wp-donottrack") ?></option>
-                                <option value="2"><?php _e("WordPress","wp-donottrack") ?></option>
-                                <option value="3"><?php _e("Web Technology","wp-donottrack") ?></option>
-                        </select>
-                </h3>
-                <div id="futtta_feed">You might want to add googleapis.com to your whitelist for this rss-widget to work :-)</div>
-        </div>
-</div>
+	add_settings_section(
+		'wp_donottrack_scope_section',
+		__( 'Who do you want to stop tracking for?', 'wp-donottrack' ),
+		'wp_donottrack_scope_section_callback',
+		'wp-donottrack' );
 
-<script type="text/javascript">
-	var feed = new Array;
-	feed[1]="http://feeds.feedburner.com/futtta_wp-donottrack";
-	feed[2]="http://feeds.feedburner.com/futtta_wordpress";
-	feed[3]="http://feeds.feedburner.com/futtta_webtech";
-	cookiename="wp-donottrack_feed";
+	add_settings_field(
+		'wp_donottrack_scope',
+		__( 'Visitor profile', 'wp-donottrack' ),
+		'wp_donottrack_scope_render',
+		'wp-donottrack',
+		'wp_donottrack_scope_section' );
 
-	jQuery(document).ready(function() {
-		jQuery("#feed_dropdown").change(function() { show_feed(jQuery("#feed_dropdown").val()) });
+	add_settings_section(
+		'wp_donottrack_level_section',
+		__( 'Normal, forced or Superclean mode?', 'wp-donottrack' ),
+		'wp_donottrack_level_section_callback',
+		'wp-donottrack' );
 
-		feedid=jQuery.cookie(cookiename);
-		if(typeof(feedid) !== "string") feedid=1;
+	add_settings_field(
+		'wp_donottrack_level',
+		__( 'Operating mode', 'wp-donottrack' ),
+		'wp_donottrack_level_render',
+		'wp-donottrack',
+		'wp_donottrack_level_section' );
 
-		show_feed(feedid);
-	})
+	add_settings_section(
+		'wp_donottrack_list_section',
+		__( 'Blacklist or Whitelist mode?', 'wp-donottrack' ),
+		'wp_donottrack_list_section_callback',
+		'wp-donottrack' );
 
-	function show_feed(id) {
-  		jQuery('#futtta_feed').rssfeed(feed[id], {
-			<?php if ($ssl) echo "ssl: true,"; ?>
-    			limit: 4,
-			date: true,
-			header: false
-  		});
-		jQuery("#feed_dropdown").val(id);
-		jQuery.cookie(cookiename,id,{ expires: 365 });
+	add_settings_field(
+		'wp_donottrack_listmode',
+		__( 'List mode', 'wp-donottrack' ),
+		'wp_donottrack_listmode_render',
+		'wp-donottrack',
+		'wp_donottrack_list_section' );
+
+	add_settings_section(
+		'wp_donottrack_thirdparty_section',
+		__( '3rd Party Plugins and Libraries', 'wp-donottrack' ),
+		'wp_donottrack_thirdparty_section_callback',
+		'wp-donottrack' );
+
+  add_settings_field(
+    'wp_donottrack_thirdparty_googleanalytics',
+    __( 'Google Analytics', 'wp-donottrack' ),
+    'wp_donottrack_thirdparty_googleanalytics_render',
+    'wp-donottrack',
+    'wp_donottrack_thirdparty_section' );
+
+	if( is_plugin_active( "addthis/addthis.php" ) ) {
+		add_settings_field(
+			'wp_donottrack_thirdparty_addthis',
+			__( 'addthis', 'wp-donottrack' ),
+			'wp_donottrack_thirdparty_addthis_render',
+			'wp-donottrack',
+			'wp_donottrack_thirdparty_section' );
 	}
-</script>
 
-</div>
-<?php } ?>
+	if( is_plugin_active( "add-to-any/add-to-any.php" ) ) {
+		add_settings_field(
+			'wp_donottrack_thirdparty_addtoany',
+			__( 'add-to-any', 'wp-donottrack' ),
+			'wp_donottrack_thirdparty_addtoany_render',
+			'wp-donottrack',
+			'wp_donottrack_thirdparty_section' );
+	}
+}
+
+function wp_donottrack_settings_validate() {
+}
+
+function wp_donottrack_scope_section_callback() {
+	echo __( 'Recent versions of all major browsers (<a href="http://www.wired.com/epicenter/2011/04/chrome-do-not-track/all/1" target="_blank">except Chrome</a>) allow users to opt out of tracking, in which case WP DoNotTrack can test for navigator.doNotTrack to conditionally stop 3rd party tracking. Alternatively WP DoNotTrack can act on the presence of a dont_track_me=1 cookie.', 'wp-donottrack' );
+}
+
+function wp_donottrack_scope_render() {
+	$options = wp_donottrack_get_option();
+	?>
+	<fieldset>
+		<label title="<?php echo __( 'Only stop tracking for people with the DoNotTrack browser setting (does not work in Chrome) or based on the presence of a cookie.', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[scope]' <?php checked( $options['scope'], 1 ); ?> value='1'><?php echo __( 'Stop tracking for people who have their <a href="http://wordpress.org/extend/plugins/wp-donottrack/faq/">browser configured to do so or based on the presence of a cookie</a>.', 'wp-donottrack' ); ?></label></br>
+		<label title="<?php echo __( 'Privacy for all!', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[scope]' <?php checked( $options['scope'], 0 ); ?> value='0'><?php echo __( 'Disable tracking for all my visitors!', 'wp-donottrack' ); ?></label><br />
+	</fieldset>
+	<?php
+}
+
+function wp_donottrack_level_section_callback() {
+	echo __( '"Normal" gently asks WordPress to add the WP DoNotTrack javascript to the HTML to check elements being added to your page. "Forced" adds the JavaScript with output buffering instead, to stop optimizing plugins (e.g. Autoptimize and W3 Total Cache) from loading WP DoNotTrack javascript too late. "SuperClean" uses the output buffering to also filter image, iframe and script tags in your HTML.', 'wp-donottrack' );
+}
+
+function wp_donottrack_level_render() {
+	$options = wp_donottrack_get_option();
+	?>
+	<fieldset>
+		<label title="<?php echo __( 'Normal', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 0 ); ?> value='0'><?php echo __( 'Normal (least invasive)', 'wp-donottrack' ); ?></label></br>
+		<label title="<?php echo __( 'Forced', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 1 ); ?> value='1'><?php echo __( 'Forced (default)', 'wp-donottrack' ); ?></label><br />
+		<label class="wp_donottrack_superclean" title="<?php echo __( 'SuperClean', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 2 ); if($options['scope']===1) echo "style=\"display:none\""; ?> value='2' ><?php echo __( 'SuperClean (most invasive)', 'wp-donottrack' ); ?></label><br />
+	</fieldset>
+	<?php
+}
+
+function wp_donottrack_list_section_callback() {
+	echo __( "Blacklist-mode is easier to set up, but less secure as it won't stop code from being added later. Whitelist-mode is more future-proof, but you'll have to explicitely identify the 3rd parties that are allowed to add elements to the DOM.", "wp-donottrack" );
+}
+
+function wp_donottrack_listmode_render() {
+	$options = wp_donottrack_get_option();
+	?>
+	<fieldset>
+		<label title="<?php echo __( 'Blacklist', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[listmode]' <?php checked( $options['listmode'], 0 ); ?> value='0'><?php echo __( "Blacklist (all listed domains will be blocked)", "wp-donottrack" ); ?></label></br>
+		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[listmode]' <?php checked( $options['listmode'], 1 ); ?> value='1'><?php echo __( "Whitelist (all BUT the listed domains will be blocked)", "wp-donottrack" ); ?></label><br />
+	</fieldset>
+	<div id="blacklistdiv" <?php if($options['listmode']!==0) echo "style=\"display:none\""; ?>>
+		<label title="<?php echo __( 'Blacklist', 'wp-donottrack' ); ?>" for="wp_donottrack_blacklist"><input id="wp_donottrack_blacklist" type="text" name="wp_donottrack_settings[blacklist]" value="<?php $options['blacklist'] ?>" size="80" class="regular-text code" /></label><br />
+		<span class="description"><?php echo __( "Comma-seperated list of the domains you want to exclude from being added to your blog", "wp-donottrack" ) ?></span>
+	</div>
+	<div id="whitelistdiv" <?php if($options['listmode']!==1) echo "style=\"display:none\""; ?>>
+		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>" for="wp_donottrack_whitelist"><input id="wp_donottrack_whitelist" type="text" name="wp_donottrack_settings[whitelist]" value="<?php $options['whitelist'] ?>" size="80" class="regular-text code" /></label><br />
+		<span class="description"><?php echo __( "Comma-seperated list of the domains you want to allow to be added to your blog (your blog will be auto-whitelisted)", "wp-donottrack" ) ?></span>
+	</div>
+	<?php
+}
+
+function wp_donottrack_thirdparty_section_callback() {
+	echo __( "WP DoNotTrack can try to assist in anonymizing different 3rd party plugins and libraries, if they are included to this WordPress instance. Please bear in mind, that success may heavily depend on the order, in which the plugins and libraries are loaded (which this plugin does not take control of) and the recognition of external configuration. Anonymization therefore can not be guaranteed and has to be evaluated before productive usage.", "wp-donottrack" );
+}
+
+function wp_donottrack_thirdparty_addthis_render() {
+	$options = wp_donottrack_get_option();
+	?>
+	<label title="<?php echo __( 'Use AddThis plugin without cookies', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][addthis]' <?php checked( $options['thirdparty']['addthis'], 1 ); ?> value='1'><?php echo __( 'Instruct the <a href="https://wordpress.org/plugins/addthis/" target="_blank">AddThis plugin</a> to not use cookies.', "wp-donottrack" ) ?></label>
+	<?php
+}
+
+function wp_donottrack_thirdparty_addtoany_render() {
+	$options = wp_donottrack_get_option();
+	?>
+	<label title="<?php echo __( 'Instruct Add-To-Any plugin to not use 3rd party cookies', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][add-to-any]' <?php checked( $options['thirdparty']['add-to-any'], 1 ); ?> value='1'><?php echo __( 'Tell the <a href="https://wordpress.org/plugins/add-to-any/" target="_blank">Add-To-Any plugin</a> to disable 3rd party cookies.', "wp-donottrack" ) ?></label>
+	<?php
+}
+
+function wp_donottrack_thirdparty_googleanalytics_render() {
+	$options = wp_donottrack_get_option();
+	?>
+	<label title="<?php echo __( 'IP address anonymization for Google Analytics', 'wp-donottrack' ) ?>"><input type='checkbox' name='wp_donottrack_settings[thirdparty][googleanalytics]' <?php checked( $options['thirdparty']['googleanalytics'], 1 ); ?> value='1'><?php echo __( 'Instruct Google Analytics (<a href="https://developers.google.com/analytics/devguides/collection/gtagjs/" target="_blank">Global Site Tag/gtag.js</a>, <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/" target="_blank">Universal Analytics/analytics.js</a> and <a href="https://developers.google.com/analytics/devguides/collection/gajs/" target="_blank">Classical Google Analytics/ga.js</a>) to anonymize IP addresses.', "wp-donottrack" ) ?></label>
+	<?php
+}
+
+function wp_donottrack_settings_jquery() {
+	?>
+	<script type="text/javascript">
+		jQuery( document ).ready( function() {
+			jQuery( 'input:radio[name="wp_donottrack_settings[listmode]"]' ).change( function() {
+				if( jQuery( 'input:radio[name="wp_donottrack_settings[listmode]"]:checked' ).val() === "1") {
+					jQuery( "#blacklistdiv" ).hide( 800 );
+					jQuery( "#whitelistdiv" ).show( 800 );
+				} else {
+					jQuery( "#whitelistdiv" ).hide( 800 );
+					jQuery( "#blacklistdiv" ).show( 800 );
+				}
+			} );
+
+			jQuery( 'input:radio[name="wp_donottrack_settings[scope]"]' ).change( function() {
+				if( jQuery( 'input:radio[name="wp_donottrack_settings[scope]"]:checked' ).val() === "1") {
+					if( jQuery( 'input:radio[name="wp_donottrack_settings[level]"]:checked' ).val() === "2") {
+						jQuery( 'input:radio[name="wp_donottrack_settings[level]"]' )[1].checked = true;
+					}
+					jQuery( ".wp_donottrack_superclean" ).hide( 800 );
+				} else {
+					jQuery( ".wp_donottrack_superclean" ).show( 800 );
+				}
+			} );
+		} )
+	</script>
+	<?php
+}
+?>
