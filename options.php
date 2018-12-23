@@ -107,8 +107,8 @@ function wp_donottrack_scope_render() {
 	$options = wp_donottrack_get_option();
 	?>
 	<fieldset>
-		<label title="<?php echo __( 'Only stop tracking for people with the DoNotTrack browser setting (does not work in Chrome) or based on the presence of a cookie.', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[scope]' <?php checked( $options['scope'], 1 ); ?> value='1'><?php echo __( 'Stop tracking for people who have their <a href="http://wordpress.org/extend/plugins/wp-donottrack/faq/">browser configured to do so or based on the presence of a cookie</a>.', 'wp-donottrack' ); ?></label></br>
-		<label title="<?php echo __( 'Privacy for all!', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[scope]' <?php checked( $options['scope'], 0 ); ?> value='0'><?php echo __( 'Disable tracking for all my visitors!', 'wp-donottrack' ); ?></label><br />
+		<label title="<?php echo __( 'Only stop tracking for people with the DoNotTrack browser setting (does not work in Chrome) or based on the presence of a cookie.', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[scope]' <?php checked( $options['scope'], '1' ); ?> value='1'><?php echo __( 'Stop tracking for people who have their <a href="http://wordpress.org/extend/plugins/wp-donottrack/faq/">browser configured to do so or based on the presence of a cookie</a>.', 'wp-donottrack' ); ?></label></br>
+		<label title="<?php echo __( 'Privacy for all!', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[scope]' <?php checked( $options['scope'], '0' ); ?> value='0'><?php echo __( 'Disable tracking for all my visitors!', 'wp-donottrack' ); ?></label><br />
 	</fieldset>
 	<?php
 }
@@ -123,7 +123,7 @@ function wp_donottrack_level_render() {
 	<fieldset>
 		<label title="<?php echo __( 'Normal', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 0 ); ?> value='0'><?php echo __( 'Normal (least invasive)', 'wp-donottrack' ); ?></label></br>
 		<label title="<?php echo __( 'Forced', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 1 ); ?> value='1'><?php echo __( 'Forced (default)', 'wp-donottrack' ); ?></label><br />
-		<label class="wp_donottrack_superclean" title="<?php echo __( 'SuperClean', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 2 ); if( $options['scope'] === 1 ) echo "style=\"display:none\""; ?> value='2' ><?php echo __( 'SuperClean (most invasive)', 'wp-donottrack' ); ?></label><br />
+		<label class="wp_donottrack_superclean" title="<?php echo __( 'SuperClean', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 2 ); if( $options['scope'] === '1' ) echo "style=\"display:none\""; ?> value='2' ><?php echo __( 'SuperClean (most invasive)', 'wp-donottrack' ); ?></label><br />
 	</fieldset>
 	<?php
 }
