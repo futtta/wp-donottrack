@@ -140,11 +140,11 @@ function wp_donottrack_listmode_render() {
 		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[listmode]' <?php checked( $options['listmode'], 1 ); ?> value='1'><?php echo __( "Whitelist (all BUT the listed domains will be blocked)", "wp-donottrack" ); ?></label><br />
 	</fieldset>
 	<div id="blacklistdiv" <?php if($options['listmode']!==0) echo "style=\"display:none\""; ?>>
-		<label title="<?php echo __( 'Blacklist', 'wp-donottrack' ); ?>" for="wp_donottrack_blacklist"><input id="wp_donottrack_blacklist" type="text" name="wp_donottrack_settings[blacklist]" value="<?php $options['blacklist'] ?>" size="80" class="regular-text code" /></label><br />
+		<label title="<?php echo __( 'Blacklist', 'wp-donottrack' ); ?>" for="wp_donottrack_blacklist"><input id="wp_donottrack_blacklist" type="text" name="wp_donottrack_settings[blacklist]" value="<?php echo $options['blacklist'] ?>" size="80" class="regular-text code" /></label><br />
 		<span class="description"><?php echo __( "Comma-seperated list of the domains you want to exclude from being added to your blog", "wp-donottrack" ) ?></span>
 	</div>
 	<div id="whitelistdiv" <?php if($options['listmode']!==1) echo "style=\"display:none\""; ?>>
-		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>" for="wp_donottrack_whitelist"><input id="wp_donottrack_whitelist" type="text" name="wp_donottrack_settings[whitelist]" value="<?php $options['whitelist'] ?>" size="80" class="regular-text code" /></label><br />
+		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>" for="wp_donottrack_whitelist"><input id="wp_donottrack_whitelist" type="text" name="wp_donottrack_settings[whitelist]" value="<?php echo $options['whitelist'] ?>" size="80" class="regular-text code" /></label><br />
 		<span class="description"><?php echo __( "Comma-seperated list of the domains you want to allow to be added to your blog (your blog will be auto-whitelisted)", "wp-donottrack" ) ?></span>
 	</div>
 	<?php
