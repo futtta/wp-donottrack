@@ -13,7 +13,7 @@ function wp_donottrack_options_page_render() {
 		<h2><?php echo __( "Options for WP DoNotTrack", "wp-donottrack" ) ?></h2>
 
 		<?php
-		settings_fields( 'wp_donottrack_settings' );
+		settings_fields( 'wp-donottrack' );
 		do_settings_sections( 'wp-donottrack' );
 		submit_button();
 		?>
@@ -23,7 +23,7 @@ function wp_donottrack_options_page_render() {
 }
 
 function wp_donottrack_settings_init() {
-	register_setting( 'wp_donottrack_settings', 'wp_donottrack_settings', 'wp_donottrack_settings_validate' );
+	register_setting( 'wp-donottrack', 'wp_donottrack_settings' );
 
 	add_settings_section(
 		'wp_donottrack_scope_section',
@@ -123,7 +123,7 @@ function wp_donottrack_level_render() {
 	<fieldset>
 		<label title="<?php echo __( 'Normal', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 0 ); ?> value='0'><?php echo __( 'Normal (least invasive)', 'wp-donottrack' ); ?></label></br>
 		<label title="<?php echo __( 'Forced', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 1 ); ?> value='1'><?php echo __( 'Forced (default)', 'wp-donottrack' ); ?></label><br />
-		<label class="wp_donottrack_superclean" title="<?php echo __( 'SuperClean', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 2 ); if($options['scope']===1) echo "style=\"display:none\""; ?> value='2' ><?php echo __( 'SuperClean (most invasive)', 'wp-donottrack' ); ?></label><br />
+		<label class="wp_donottrack_superclean" title="<?php echo __( 'SuperClean', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[level]' <?php checked( $options['level'], 2 ); if( $options['scope'] === 1 ) echo "style=\"display:none\""; ?> value='2' ><?php echo __( 'SuperClean (most invasive)', 'wp-donottrack' ); ?></label><br />
 	</fieldset>
 	<?php
 }
@@ -139,12 +139,12 @@ function wp_donottrack_listmode_render() {
 		<label title="<?php echo __( 'Blacklist', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[listmode]' <?php checked( $options['listmode'], 0 ); ?> value='0'><?php echo __( "Blacklist (all listed domains will be blocked)", "wp-donottrack" ); ?></label></br>
 		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>"><input type='radio' name='wp_donottrack_settings[listmode]' <?php checked( $options['listmode'], 1 ); ?> value='1'><?php echo __( "Whitelist (all BUT the listed domains will be blocked)", "wp-donottrack" ); ?></label><br />
 	</fieldset>
-	<div id="blacklistdiv" <?php if($options['listmode']!==0) echo "style=\"display:none\""; ?>>
-		<label title="<?php echo __( 'Blacklist', 'wp-donottrack' ); ?>" for="wp_donottrack_blacklist"><input id="wp_donottrack_blacklist" type="text" name="wp_donottrack_settings[blacklist]" value="<?php $options['blacklist'] ?>" size="80" class="regular-text code" /></label><br />
+	<div id="blacklistdiv" <?php if( $options['listmode'] !== '0' ) echo "style=\"display:none\""; ?>>
+		<label title="<?php echo __( 'Blacklist', 'wp-donottrack' ); ?>" for="wp_donottrack_blacklist"><input id="wp_donottrack_blacklist" type="text" name="wp_donottrack_settings[blacklist]" value="<?php echo $options['blacklist'] ?>" size="80" class="regular-text code" /></label><br />
 		<span class="description"><?php echo __( "Comma-seperated list of the domains you want to exclude from being added to your blog", "wp-donottrack" ) ?></span>
 	</div>
-	<div id="whitelistdiv" <?php if($options['listmode']!==1) echo "style=\"display:none\""; ?>>
-		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>" for="wp_donottrack_whitelist"><input id="wp_donottrack_whitelist" type="text" name="wp_donottrack_settings[whitelist]" value="<?php $options['whitelist'] ?>" size="80" class="regular-text code" /></label><br />
+	<div id="whitelistdiv" <?php if( $options['listmode'] !== '1' ) echo "style=\"display:none\""; ?>>
+		<label title="<?php echo __( 'Whitelist', 'wp-donottrack' ); ?>" for="wp_donottrack_whitelist"><input id="wp_donottrack_whitelist" type="text" name="wp_donottrack_settings[whitelist]" value="<?php echo $options['whitelist'] ?>" size="80" class="regular-text code" /></label><br />
 		<span class="description"><?php echo __( "Comma-seperated list of the domains you want to allow to be added to your blog (your blog will be auto-whitelisted)", "wp-donottrack" ) ?></span>
 	</div>
 	<?php
