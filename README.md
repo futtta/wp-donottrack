@@ -23,7 +23,7 @@ This plugin can be useful if you want to:
 * limit the number of external servers that are called from your blog (performance)
 * make your blog more compliant with the EU Cookie Law as implemented in a.o. the UK and Holland (with other EU countries to follow) using conditional privacy
 
-WP DoNotTrack uses [jQuery AOP](http://code.google.com/p/jquery-aop/) to catch and inspect elements (images, iframes and scripts) that are about to be added to the DOM and renders these harmless if the black- or whitelist say so. You can block 3rd party tracking for all you visitors, or just for those that have navigator.doNotTrack set to "1" or based on a browser cookie.
+WP DoNotTrack uses [jQuery AOP](https://github.com/gonzalocasas/jquery-aop) to catch and inspect elements (images, iframes and scripts) that are about to be added to the DOM and renders these harmless if the black- or whitelist say so. You can block 3rd party tracking for all you visitors, or just for those that have navigator.doNotTrack set to "1" or based on a browser cookie.
 
 The "forced" and "SuperClean" modes use WordPress's output buffering to change the HTML slightly ("forced") or thoroughly ("SuperClean"). SuperClean uses [Simple HTML DOM Parser](http://simplehtmldom.sourceforge.net/) to filter unwanted 3rd party code from the HTML.
 
@@ -103,7 +103,7 @@ Just tell me, I like the feedback and in general I'll reply within a couple of h
 * split the plugin's JavaScript code from the jQuery AOP source code, so that they can be maintained separately
 * rework of wp-donottrack.php (spelling, structure, avoiding global variables, etc.)
 * added IP address anonymization for Google Universal Analytics and Google Global Site Tag
-* updated external sources ([jQuery AOP](https://github.com/gonzalocasas/jquery-aop) and [PHP Simple HTML DOM Parser](https://github.com/yardenac/sim$
+* updated external sources ([jQuery AOP](https://github.com/gonzalocasas/jquery-aop) and [PHP Simple HTML DOM Parser](https://github.com/yardenac/simplehtmldom))
 * added support for being run as mu-plugin
 
 ### 0.8.8
