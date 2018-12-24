@@ -63,7 +63,7 @@ function wp_donottrack_get_option() {
   return get_option( 'wp_donottrack_settings', $default );
 }
 
-function wp_donottrack_get_files() {
+function wp_donottrack_get_plugin_files() {
 	global $debug;
 
 	if( $debug ) {
@@ -73,7 +73,7 @@ function wp_donottrack_get_files() {
 	} else {
 		$files = array(
 			"wpdnt" => "donottrack-min.js",
-			"aop"		=> "external/js/jquery-aop/aop-min.js" );
+			"aop"	=> "external/js/jquery-aop/aop-min.js" );
 	}
 
 	$files['htmldom'] = "external/php/simplehtmldom/simple_html_dom.php";
@@ -86,9 +86,9 @@ function wp_donottrack_get_file_url( $file, $version = false ) {
 
 	$plugin_url = plugins_url( $file, __FILE__ );
 
-  if( is_ssl() ) {
-    $plugin_url = str_replace( "http:", "https:", $plugin_url );
-  }
+        if( is_ssl() ) {
+            $plugin_url = str_replace( "http:", "https:", $plugin_url );
+        }
 
 	if( $version ){
 		if( $debug ) {
@@ -150,6 +150,7 @@ function wp_donottrack_config( $noEcho = false ) {
 			$blacklist = "[]";
 			break;
 		case "2":
+                default :
 			$listmode = "blacklist";
 			$blacklist = wp_donottrack_get_black_list();
 			$whitelist = "[]";
@@ -166,7 +167,7 @@ function wp_donottrack_config( $noEcho = false ) {
 }
 
 function wp_donottrack_init() {
-	$files = wp_donottrack_get_files();
+	$files = wp_donottrack_get_plugin_files();
 	$plugin_url = wp_donottrack_get_file_url( $files['wpdnt'], true );
 	wp_enqueue_script( 'wp-donottrack', $plugin_url );
 }
@@ -196,7 +197,7 @@ function wp_donottrack_ob_setup(){
 
 function wp_donottrack_get_file_content( $file_name ) {
 	$file_path = plugin_dir_path( __FILE__ ) . $file_name;
-  return file_get_contents( $file_path );
+        return file_get_contents( $file_path );
 }
 
 function wp_donottrack_ob_filter( $html ){
@@ -208,7 +209,7 @@ function wp_donottrack_ob_filter( $html ){
 
 	if( apply_filters( 'wp_donottrack_inline_js', true ) ) {
 		$wpdnt_setup = "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['aop'] ) . "</script>\n";
-    $wpdnt_setup .= "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['wpdnt'] ) . "</script>";
+                $wpdnt_setup .= "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['wpdnt'] ) . "</script>";
 	} else {
 		$wpdnt_setup = "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['aop'] ) . "\"></script>\n";
 		$wpdnt_setup .= "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['wpdnt'] ) . "\"></script>\n";
