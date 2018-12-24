@@ -50,15 +50,15 @@ if( !is_amp() ) {
 
 function wp_donottrack_get_option() {
   $default = array(
-    'scope'      => 0,
-    'level'      => 1,
-    'listmode'   => 0,
+    'scope'      => '0',
+    'level'      => '1',
+    'listmode'   => '0',
     'blacklist'  => "media6degrees.com, quantserve.com, lockerz.com",
     'whitelist'  => "ajax.googleapis.com",
     'thirdparty' => array(
-      'addthis'         => 0,
-      'add-to-any'      => 0,
-      'googleanalytics' => 0 ) );
+      'addthis'         => '0',
+      'add-to-any'      => '0',
+      'googleanalytics' => '0' ) );
 
   return get_option( 'wp_donottrack_settings', $default );
 }
