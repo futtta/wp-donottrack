@@ -145,13 +145,11 @@ function wp_donottrack_config( $noEcho = false ) {
 
 	switch( $options['listmode'] ) {
 		case "1":
-			$listmode = "whitelist";
 			$whitelist = wp_donottrack_get_white_list();
 			$blacklist = "[]";
 			break;
 		case "2":
-                default :
-			$listmode = "blacklist";
+		default :
 			$blacklist = wp_donottrack_get_black_list();
 			$whitelist = "[]";
 			break;
