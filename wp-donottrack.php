@@ -149,7 +149,7 @@ function wp_donottrack_config( $noEcho = false ) {
 			$blacklist = "[]";
 			break;
 		case "2":
-			default :
+		default:
 			$blacklist = wp_donottrack_get_black_list();
 			$whitelist = "[]";
 			break;
