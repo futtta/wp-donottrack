@@ -23,44 +23,44 @@ if( is_admin() ) {
 $options = wp_donottrack_get_option();
 
 if( !function_exists( "is_amp" ) ) {
-  function is_amp() {
-    if( ( strpos( $_SERVER['REQUEST_URI'], '?amp' ) !== false ) || ( strpos( $_SERVER['REQUEST_URI'], '/amp/' ) !== false ) ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+	function is_amp() {
+		if( ( strpos( $_SERVER['REQUEST_URI'], '?amp' ) !== false ) || ( strpos( $_SERVER['REQUEST_URI'], '/amp/' ) !== false ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 if( !is_amp() ) {
-  if( $options['level'] !== "0" ) {
-    if( !is_admin() ) {
-      add_action( 'wp', 'wp_donottrack_ob_setup', 10, 0 );
-    } else {
-      add_action( 'wp_print_scripts', 'wp_donottrack_config' );
-      add_action( 'init', 'wp_donottrack_init' );
-      add_action( 'admin_footer', 'wp_donottrack_footer' );
-    }
-  } else {
-    add_action( 'wp_print_scripts', 'wp_donottrack_config' );
-    add_action( 'init', 'wp_donottrack_init' );
-    add_action( 'wp_footer', 'wp_donottrack_footer' );
-  }
+	if( $options['level'] !== "0" ) {
+		if( !is_admin() ) {
+			add_action( 'wp', 'wp_donottrack_ob_setup', 10, 0 );
+		} else {
+			add_action( 'wp_print_scripts', 'wp_donottrack_config' );
+			add_action( 'init', 'wp_donottrack_init' );
+			add_action( 'admin_footer', 'wp_donottrack_footer' );
+		}
+	} else {
+		add_action( 'wp_print_scripts', 'wp_donottrack_config' );
+		add_action( 'init', 'wp_donottrack_init' );
+		add_action( 'wp_footer', 'wp_donottrack_footer' );
+	}
 }
 
 function wp_donottrack_get_option() {
-  $default = array(
-    'scope'      => '0',
-    'level'      => '1',
-    'listmode'   => '0',
-    'blacklist'  => "media6degrees.com, quantserve.com, lockerz.com",
-    'whitelist'  => "ajax.googleapis.com",
-    'thirdparty' => array(
-      'addthis'         => '0',
-      'add-to-any'      => '0',
-      'googleanalytics' => '0' ) );
+	$default = array(
+			'scope'      => '0',
+			'level'      => '1',
+			'listmode'   => '0',
+			'blacklist'  => "media6degrees.com, quantserve.com, lockerz.com",
+			'whitelist'  => "ajax.googleapis.com",
+			'thirdparty' => array(
+					'addthis'         => '0',
+					'add-to-any'      => '0',
+					'googleanalytics' => '0' ) );
 
-  return get_option( 'wp_donottrack_settings', $default );
+	return get_option( 'wp_donottrack_settings', $default );
 }
 
 function wp_donottrack_get_plugin_files() {
@@ -86,9 +86,9 @@ function wp_donottrack_get_file_url( $file, $version = false ) {
 
 	$plugin_url = plugins_url( $file, __FILE__ );
 
-        if( is_ssl() ) {
-            $plugin_url = str_replace( "http:", "https:", $plugin_url );
-        }
+	if( is_ssl() ) {
+		$plugin_url = str_replace( "http:", "https:", $plugin_url );
+	}
 
 	if( $version ){
 		if( $debug ) {
@@ -145,13 +145,11 @@ function wp_donottrack_config( $noEcho = false ) {
 
 	switch( $options['listmode'] ) {
 		case "1":
-			$listmode = "whitelist";
 			$whitelist = wp_donottrack_get_white_list();
 			$blacklist = "[]";
 			break;
 		case "2":
-                default :
-			$listmode = "blacklist";
+		default:
 			$blacklist = wp_donottrack_get_black_list();
 			$whitelist = "[]";
 			break;
@@ -196,8 +194,8 @@ function wp_donottrack_ob_setup(){
 }
 
 function wp_donottrack_get_file_content( $file_name ) {
-	$file_path = plugin_dir_path( __FILE__ ) . $file_name;
-        return file_get_contents( $file_path );
+	$file_path = trailingslashit( plugin_dir_path( __FILE__ ) ) . $file_name;
+	return file_get_contents( $file_path );
 }
 
 function wp_donottrack_ob_filter( $html ){
@@ -209,7 +207,7 @@ function wp_donottrack_ob_filter( $html ){
 
 	if( apply_filters( 'wp_donottrack_inline_js', true ) ) {
 		$wpdnt_setup = "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['aop'] ) . "</script>\n";
-                $wpdnt_setup .= "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['wpdnt'] ) . "</script>";
+		$wpdnt_setup .= "<script type=\"text/javascript\">" . wp_donottrack_get_file_content( $plugin_files['wpdnt'] ) . "</script>";
 	} else {
 		$wpdnt_setup = "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['aop'] ) . "\"></script>\n";
 		$wpdnt_setup .= "<script type=\"text/javascript\" src=\"" . wp_donottrack_get_file_url( $plugin_files['wpdnt'] ) . "\"></script>\n";
@@ -220,7 +218,7 @@ function wp_donottrack_ob_filter( $html ){
 	$html = preg_replace( "/(<body\b[^>]*>)/", "$1\n" . $wpdnt_body, $html );
 
 	if( $options['level'] === "2" ) {
-		require_once( dirname( __FILE__ ) . $plugin_files['htmldom'] );
+		require_once( trailingslashit( dirname( __FILE__ ) ) . $plugin_files['htmldom'] );
 		$dom = str_get_html( $html, true, true, "UTF-8", false, "\n" );
 
 		if( method_exists( $dom, "find" ) ) {

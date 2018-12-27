@@ -1,0 +1,250 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP DoNotTrack\n"
+"POT-Creation-Date: 2018-12-26 22:16+0100\n"
+"PO-Revision-Date: 2018-12-26 22:36+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.11\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: options.php\n"
+
+#: options.php:13
+msgid "Options for WP DoNotTrack"
+msgstr "Optionen für WP DoNotTrack"
+
+#: options.php:30
+msgid "Who do you want to stop tracking for?"
+msgstr "Für wen soll das Tracking gestoppt werden?"
+
+#: options.php:36
+msgid "Visitor profile"
+msgstr "Besucherprofil"
+
+#: options.php:43
+msgid "Normal, forced or Superclean mode?"
+msgstr "Normal, Erzwungen oder SuperClean-Modus?"
+
+#: options.php:49
+msgid "Operating mode"
+msgstr "Betriebsart"
+
+#: options.php:56
+msgid "Blacklist or Whitelist mode?"
+msgstr "Schwarze Liste oder Weiße Liste?"
+
+#: options.php:62
+msgid "List mode"
+msgstr "Listenart"
+
+#: options.php:69
+msgid "3rd Party Plugins and Libraries"
+msgstr "3rd Party Plugins und Libraries"
+
+#: options.php:75
+msgid "Google Analytics"
+msgstr "Google Analytics"
+
+#: options.php:83
+msgid "addthis"
+msgstr "addthis"
+
+#: options.php:92
+msgid "add-to-any"
+msgstr "add-to-any"
+
+#: options.php:103
+msgid ""
+"Recent versions of all major browsers (<a href=\"http://www.wired.com/"
+"epicenter/2011/04/chrome-do-not-track/all/1\" target=\"_blank\">except "
+"Chrome</a>) allow users to opt out of tracking, in which case WP DoNotTrack "
+"can test for navigator.doNotTrack to conditionally stop 3rd party tracking. "
+"Alternatively WP DoNotTrack can act on the presence of a dont_track_me=1 "
+"cookie."
+msgstr ""
+"Neueste Versionen aller gängigen Browser (<a href=\"http://www.wired.com/"
+"epicenter/2011/04/chrome-do-not-track/all/1\" target=\"_blank\">außer "
+"Chrome</a>) ermöglichen Anwendern, Tracking auszuschalten. In diesem Fall "
+"kann WP DoNotTrack auf navigator.doNotTrack prüfen, um im Bedarfsfall 3rd "
+"Party Tracking zu verhindern. Alternativ kann WP DoNotTrack auf die "
+"Anwesenheit des dont_track_me=1-Cookies reagieren."
+
+#: options.php:110
+msgid ""
+"Only stop tracking for people with the DoNotTrack browser setting (does not "
+"work in Chrome) or based on the presence of a cookie."
+msgstr ""
+"Stoppe das Tracking nur für Personen mit DoNotTrack-Einstellung im Browser "
+"(funktioniert nicht in Chrome) oder bei Vorhandensein des entsprechenden "
+"Cookies."
+
+#: options.php:110
+msgid ""
+"Stop tracking for people who have their <a href=\"http://wordpress.org/"
+"extend/plugins/wp-donottrack/faq/\">browser configured to do so or based on "
+"the presence of a cookie</a>."
+msgstr ""
+"Stoppe das Tracking für Personen, die ihren <a href=\"http://wordpress.org/"
+"extend/plugins/wp-donottrack/faq/\">Browser entsprechend konfiguriert haben "
+"oder auf Basis eines Cookies</a>."
+
+#: options.php:111
+msgid "Privacy for all!"
+msgstr "Datenschutz für alle!"
+
+#: options.php:111
+msgid "Disable tracking for all my visitors!"
+msgstr "Stoppe Tracking für alle meine Besucher!"
+
+#: options.php:117
+msgid ""
+"\"Normal\" gently asks WordPress to add the WP DoNotTrack javascript to the "
+"HTML to check elements being added to your page. \"Forced\" adds the "
+"JavaScript with output buffering instead, to stop optimizing plugins (e.g. "
+"Autoptimize and W3 Total Cache) from loading WP DoNotTrack javascript too "
+"late. \"SuperClean\" uses the output buffering to also filter image, iframe "
+"and script tags in your HTML."
+msgstr ""
+"\"Normal\" fragt WordPress freundlich, dass WP DoNotTrack JavaScript zum "
+"HTML hinzuzufügen, um zu prüfen, ob Elemente hinzugefügt werden. \"Erzwungen"
+"\" fügt das JavaScript hingegen mit Output Buffering hinzu, um optimierende "
+"Plugins (z.B. Autoptimize und W3 Total Cache) daran zu hindern, das WP "
+"DoNotTrack Javascript zu spät zu laden. \"SuperClean\" nutzt das Output "
+"Buffering, um auch image, iframe und script tags im HTML zu filtern."
+
+#: options.php:124
+msgid "Normal"
+msgstr "Normal"
+
+#: options.php:124
+msgid "Normal (least invasive)"
+msgstr "Normal (am wenigsten invasiv)"
+
+#: options.php:125
+msgid "Forced"
+msgstr "Erzwungen"
+
+#: options.php:125
+msgid "Forced (default)"
+msgstr "Erzwungen (standard)"
+
+#: options.php:126
+msgid "SuperClean"
+msgstr "SuperClean"
+
+#: options.php:126
+msgid "SuperClean (most invasive)"
+msgstr "SuperClean (am meisten invasiv)"
+
+#: options.php:132
+msgid ""
+"Blacklist-mode is easier to set up, but less secure as it won't stop code "
+"from being added later. Whitelist-mode is more future-proof, but you'll have "
+"to explicitely identify the 3rd parties that are allowed to add elements to "
+"the DOM."
+msgstr ""
+"Der Modus mit Schwarzer Liste ist einfacher einzurichten, aber weniger "
+"sicher, da er keinen später hinzugefügten Code stoppen wird. Der Modus mit "
+"Weißer Liste ist zukunftssicherer, aber es müssen explizit diejenigen 3rd "
+"Parties identifiziert werden, die Elemente zum DOM hinzufügen dürfen."
+
+#: options.php:139 options.php:143
+msgid "Blacklist"
+msgstr "Schwarze Liste"
+
+#: options.php:139
+msgid "Blacklist (all listed domains will be blocked)"
+msgstr "Schwarze Liste (alle gelisteten Domains werden blockiert)"
+
+#: options.php:140 options.php:147
+msgid "Whitelist"
+msgstr "Weiße Liste"
+
+#: options.php:140
+msgid "Whitelist (all BUT the listed domains will be blocked)"
+msgstr "Weiße Liste (alle AUßER der gelisteten Domains werden blockiert)"
+
+#: options.php:144
+msgid ""
+"Comma-seperated list of the domains you want to exclude from being added to "
+"your blog"
+msgstr ""
+"Komma-getrennte Liste an Domains, die nicht zum Blog hinzugefügt werden "
+"dürfen"
+
+#: options.php:148
+msgid ""
+"Comma-seperated list of the domains you want to allow to be added to your "
+"blog (your blog will be auto-whitelisted)"
+msgstr ""
+"Komma-getrennte Liste an Domains, die zum Blog hinzugefügt werden dürfen "
+"(der Blog selbst wird automatisch erlaubt)"
+
+#: options.php:154
+msgid ""
+"WP DoNotTrack can try to assist in anonymizing different 3rd party plugins "
+"and libraries, if they are included to this WordPress instance. Please bear "
+"in mind, that success may heavily depend on the order, in which the plugins "
+"and libraries are loaded (which this plugin does not take control of) and "
+"the recognition of external configuration. Anonymization therefore can not "
+"be guaranteed and has to be evaluated before productive usage."
+msgstr ""
+"WP DoNotTrack kann versuchen, beim Anonymisieren von 3rd Party Plugins und "
+"Libraries zu helfen, die in der WordPress-Instanz eingebettet sind. Bitte "
+"beachten Sie, dass der Erfolg stark von der Reihenfolge abhängt, in welcher "
+"die Plugins und Libraries geladen werden (und worauf dieses Plugin keinen "
+"Einfluss hat), sowie von externen Konfigurationen. Die Anonymisierung kann "
+"somit nicht garantiert werden und sollte vor produktiver Nutzung geprüft "
+"werden."
+
+#: options.php:160
+msgid "Use AddThis plugin without cookies"
+msgstr "Nutze das AddThis-Plugin ohne Cookies"
+
+#: options.php:160
+msgid ""
+"Instruct the <a href=\"https://wordpress.org/plugins/addthis/\" target="
+"\"_blank\">AddThis plugin</a> to not use cookies."
+msgstr ""
+"Weise das <a href=\"https://wordpress.org/plugins/addthis/\" target=\"_blank"
+"\">AddThis-Plugin</a> an, keine Cookies zu verwenden"
+
+#: options.php:167
+msgid "Instruct Add-To-Any plugin to not use 3rd party cookies"
+msgstr "Weise das Add-To-Any-Plugin an, keine 3rd Party Cookies zu nutzen"
+
+#: options.php:167
+msgid ""
+"Tell the <a href=\"https://wordpress.org/plugins/add-to-any/\" target="
+"\"_blank\">Add-To-Any plugin</a> to disable 3rd party cookies."
+msgstr ""
+"Weise das <a href=\"https://wordpress.org/plugins/add-to-any/\" target="
+"\"_blank\">Add-To-Any-Plugin</a> an, keine 3rd Party Cookies zu nutzen."
+
+#: options.php:174
+msgid "IP address anonymization for Google Analytics"
+msgstr "IP-Addressen-Anonymisierung für Google Analytics"
+
+#: options.php:174
+msgid ""
+"Instruct Google Analytics (<a href=\"https://developers.google.com/analytics/"
+"devguides/collection/gtagjs/\" target=\"_blank\">Global Site Tag/gtag.js</"
+"a>, <a href=\"https://developers.google.com/analytics/devguides/collection/"
+"analyticsjs/\" target=\"_blank\">Universal Analytics/analytics.js</a> and <a "
+"href=\"https://developers.google.com/analytics/devguides/collection/gajs/\" "
+"target=\"_blank\">Classical Google Analytics/ga.js</a>) to anonymize IP "
+"addresses."
+msgstr ""
+"Weise Google Analytics (<a href=\"https://developers.google.com/analytics/"
+"devguides/collection/gtagjs/\" target=\"_blank\">Global Site Tag/gtag.js</"
+"a>, <a href=\"https://developers.google.com/analytics/devguides/collection/"
+"analyticsjs/\" target=\"_blank\">Universal Analytics/analytics.js</a> und <a "
+"href=\"https://developers.google.com/analytics/devguides/collection/gajs/\" "
+"target=\"_blank\">Classical Google Analytics/ga.js</a>) an, IP-Adressen zu "
+"anonymisieren."
